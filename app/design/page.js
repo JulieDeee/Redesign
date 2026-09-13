@@ -15,6 +15,15 @@ function Hero() {
   return <img src={`/hero.${HERO_EXTS[i]}`} alt="" onError={() => setI(i + 1)} />;
 }
 
+// A site photo (before/after/hero) that tries each extension, or a photo the
+// visitor just uploaded, which is already a blob URL and needs no fallback.
+function StackPhoto({ src, base }) {
+  const [i, setI] = useState(0);
+  if (src) return <span><img src={src} alt="" /></span>;
+  if (i >= HERO_EXTS.length) return null;
+  return <span><img src={`/${base}.${HERO_EXTS[i]}`} alt="" onError={() => setI(i + 1)} /></span>;
+}
+
 const PROMPTS = [
   "Make it feel warm and cozy with modern touches.",
   "Keep my furniture but give it a fresh, elevated look.",
@@ -271,7 +280,7 @@ function Designer() {
 
             {/* right: the ask */}
             <div className="card">
-              <div className="visionhead">
+              <div className="askhead">
                 <h2 className="script vision">Tell us about your vision.</h2>
                 <p className="hand tip">Not sure what to say?<br />Try our suggestions below!</p>
               </div>
@@ -347,11 +356,10 @@ function Designer() {
 
           <section className="helpband">
             <div className="stack">
-              {[preview, angles[0]?.url, angles[1]?.url, "/before.jpg", "/after.jpg", "/hero.jpg"]
-                .filter(Boolean).slice(0, 3)
-                .map((src, i) => (
-                  <span key={i}><img src={src} alt="" onError={(e) => (e.target.parentNode.style.display = "none")} /></span>
-                ))}
+              {[
+                ...[preview, angles[0]?.url, angles[1]?.url].filter(Boolean).map((src) => ({ src })),
+                { base: "before" }, { base: "after" }, { base: "hero" },
+              ].slice(0, 3).map((p, i) => <StackPhoto key={i} {...p} />)}
             </div>
             <div>
               <h4>Photos work best when…</h4>
