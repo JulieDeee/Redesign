@@ -48,10 +48,10 @@ async function shrink(file, max = 1536) {
 async function cropTo(file, box) {
   if (!box || box.length !== 4) return null;
   const img = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = URL.createObjectURL(file); });
-  const pad = 0.06;
+  const pad = 0.3; // generous — better to show the piece with its surroundings than to miss it
   let [l, t, r, b] = box.map((n) => Math.max(0, Math.min(1000, Number(n))) / 1000);
   const w = r - l, h = b - t;
-  if (w <= 0.01 || h <= 0.01) return null;
+  if (w <= 0.02 || h <= 0.02) return null;
   l = Math.max(0, l - w * pad); t = Math.max(0, t - h * pad);
   r = Math.min(1, r + w * pad); b = Math.min(1, b + h * pad);
   const sx = l * img.width, sy = t * img.height, sw = (r - l) * img.width, sh = (b - t) * img.height;
@@ -180,7 +180,7 @@ function Designer() {
           <h1 className="h">Upload. Describe. Redesign.</h1>
           <p>Your space. Our inspiration. Endless possibilities.</p>
         </div>
-        <p className="script say">Same space.<br />A better you.</p>
+        <p className="scriptfont say">Same space.<br />A better you.</p>
       </div>
 
       {phase === "done" && result ? (
@@ -281,7 +281,7 @@ function Designer() {
             {/* right: the ask */}
             <div className="card">
               <div className="askhead">
-                <h2 className="script vision">Tell us about your vision.</h2>
+                <h2 className="scriptfont vision">Tell us about your vision.</h2>
                 <p className="hand tip">Not sure what to say?<br />Try our suggestions below!</p>
               </div>
               <p className="sub">Be as detailed as you&rsquo;d like. The more you share, the more personalized your results will be.</p>
@@ -356,10 +356,7 @@ function Designer() {
 
           <section className="helpband">
             <div className="stack">
-              {[
-                ...[preview, angles[0]?.url, angles[1]?.url].filter(Boolean).map((src) => ({ src })),
-                { base: "before" }, { base: "after" }, { base: "hero" },
-              ].slice(0, 3).map((p, i) => <StackPhoto key={i} {...p} />)}
+              {["style-modern-classic", "style-moody", "style-farmhouse"].map((base) => <StackPhoto key={base} base={base} />)}
             </div>
             <div>
               <h4>Photos work best when…</h4>
@@ -373,7 +370,7 @@ function Designer() {
               <h4><span>💡</span> Pro tip</h4>
               <p>Mention what you love, what you don&rsquo;t, and how you want the space to feel.</p>
             </div>
-            <p className="script sign">Great spaces<br />start here.</p>
+            <p className="scriptfont sign">Great spaces<br />start here.</p>
           </section>
         </>
       )}
