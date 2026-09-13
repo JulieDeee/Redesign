@@ -64,9 +64,14 @@ export async function POST(req) {
   try {
     const fd = new FormData();
     fd.append("model", MODEL);
-    fd.append("image", file, "room.jpg");
-    // Extra angles of the same room help the model understand the space.
-    extras.forEach((f, i) => fd.append("image[]", f, `angle${i + 1}.jpg`));
+    // One photo goes in as "image"; several must ALL go in as "image[]" —
+    // mixing the two makes the API reject the request.
+    if (extras.length) {
+      fd.append("image[]", file, "room.jpg");
+      extras.forEach((f, i) => fd.append("image[]", f, `angle${i + 1}.jpg`));
+    } else {
+      fd.append("image", file, "room.jpg");
+    }
     fd.append("prompt", prompt);
     fd.append("quality", QUALITY);
     // Match the shape of the photo they uploaded, so before and after line up.
