@@ -135,7 +135,7 @@ function Designer() {
       fd.append("replace", JSON.stringify(items.filter((i) => !i.keep && !i.fixed).map((i) => i.name)));
       const r = await fetch("/api/redesign", { method: "POST", body: fd });
       const j = await r.json();
-      if (!r.ok) throw new Error(j.error || "Design failed.");
+      if (!r.ok) throw new Error(typeof j.error === "string" && j.error ? j.error : "Design failed. Try again in a moment.");
       setResult(j); setPhase("done"); setChat(notes.trim() ? [{ role: "user", content: notes.trim() }] : []);
       loadBrief(j.redesigned);
     } catch (e) { setErr(e.message); setPhase("idle"); }
@@ -150,11 +150,11 @@ function Designer() {
     try {
       const r = await fetch("/api/refine", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ room, style, history: chat, message }) });
       const j = await r.json();
-      if (!r.ok) throw new Error(j.error);
+      if (!r.ok) throw new Error(typeof j.error === "string" && j.error ? j.error : "Couldn't make that change.");
       setChat([...next, { role: "assistant", content: j.reply }]);
       const r2 = await fetch("/api/redesign", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ imageUrl: result.original, room, style, prompt: j.prompt, aspect }) });
       const j2 = await r2.json();
-      if (!r2.ok) throw new Error(j2.error);
+      if (!r2.ok) throw new Error(typeof j2.error === "string" && j2.error ? j2.error : "Couldn't re-render that. Try again.");
       setResult(j2); setBrief(null); loadBrief(j2.redesigned);
     } catch (e) { setErr(e.message); }
     setRefining(false);
