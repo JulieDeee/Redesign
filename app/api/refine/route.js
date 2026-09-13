@@ -32,7 +32,8 @@ export async function POST(req) {
     return Response.json(out);
   } catch (e) {
     console.error("refine failed", e);
-    const detail = e?.error?.error?.message || e?.message || "";
-    return Response.json({ error: `Couldn't make that change. ${detail}`.trim() }, { status: 502 });
+    const raw = e?.error?.error?.message ?? e?.error?.message ?? e?.message ?? "";
+    const detail = typeof raw === "string" && raw.trim() ? raw.trim() : "";
+    return Response.json({ error: detail ? `Couldn't make that change. ${detail}` : "Couldn't make that change. Try rephrasing, or reload and start again." }, { status: 502 });
   }
 }
