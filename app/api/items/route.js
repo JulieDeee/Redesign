@@ -22,7 +22,7 @@ export async function POST(req) {
         role: "user",
         content: [
           { type: "image", source: { type: "url", url: imageUrl } },
-          { type: "text", text: 'List the 4-6 most visually significant furniture pieces, light fixtures and architectural features in this room, biggest first. For each, give a tight bounding box around it as [left, top, right, bottom] where each number is 0-1000 across the image width/height. Return {"items": [{"name": "short label a homeowner would use, e.g. Brown leather sofa", "fixed": true if architectural and unchangeable (fireplace, window, brick wall, flooring) else false, "box": [left, top, right, bottom]}]}' },
+          { type: "text", text: 'This may be a room or an outdoor space. List the 4-6 most visually significant PERMANENT features: furniture, light fixtures, surfaces, plantings and architectural elements. Ignore temporary items: ladders, tools, drop cloths, boxes, bags, laundry, bins, hoses, pets and vehicles. Return {"items": [{"name": "short label a homeowner would use, e.g. Brown leather sofa or Concrete front steps", "kind": one of "seating" "table" "lighting" "storage" "window" "floor" "wall" "plant" "other", "fixed": true ONLY for major structure that would be expensive to alter (walls, roofline, windows, doors, stairs, flooring) else false}]}. Light fixtures, paint colour, planting and furniture are never fixed.' },
         ],
       }],
     });
