@@ -8,6 +8,18 @@ export const maxDuration = 120;
 const MODEL = process.env.OPENAI_IMAGE_MODEL || "gpt-image-2";
 const QUALITY = process.env.OPENAI_IMAGE_QUALITY || "high"; // low | medium | high — high costs ~20c, medium ~5c
 
+// Turns whatever an API hands back into a sentence a person can act on.
+function describe(data, status) {
+  const e = data?.error ?? data;
+  const parts = [e?.message, e?.code, e?.type].filter((x) => typeof x === "string" && x.trim());
+  if (parts.length) return parts.join(" · ");
+  try {
+    const dump = JSON.stringify(e);
+    if (dump && dump !== "{}" && dump.length < 300) return `${status}: ${dump}`;
+  } catch {}
+  return `The design service returned an error (${status}). Try a clearer photo, or try again in a moment.`;
+}
+
 async function storeImage(bytes, name, contentType) {
   const blob = await put(`rooms/${Date.now()}-${Math.random().toString(36).slice(2)}-${name}`, bytes, {
     access: "public", contentType,
@@ -84,9 +96,8 @@ export async function POST(req) {
     });
     const data = await res.json();
     if (!res.ok) {
-      console.error("openai error", data);
-      const msg = data?.error?.message || "The design service said no. Try a clearer photo.";
-      return Response.json({ error: msg }, { status: 502 });
+      console.error("openai error", JSON.stringify(data));
+      return Response.json({ error: describe(data, res.status) }, { status: 502 });
     }
     b64 = data.data?.[0]?.b64_json;
   } catch (e) {
