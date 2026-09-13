@@ -64,9 +64,8 @@ export default function Landing() {
           <h1 className="h">{HEADLINE}</h1>
           <p className="kicker">Upload a photo. Choose a style.<br />{BRAND} redesigns your actual room, in seconds.</p>
           <Link href="/design" className="btn brass">Redesign my room →</Link>
-          <div><a className="play" href="#how"><i>▶</i> Watch how it works</a></div>
         </div>
-        <p className="script">Same space.<br />A better you.</p>
+        <p className="heroscript">Same space.<br />A better you.</p>
       </header>
 
       <section className="showcase">
