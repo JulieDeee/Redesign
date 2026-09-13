@@ -208,11 +208,13 @@ a { color: inherit; }
 .keeps { display: grid; grid-template-columns: repeat(auto-fill, minmax(126px, 1fr)); gap: 12px; }
 .keep { position: relative; border: 1px solid var(--line); border-radius: 4px; background: var(--ivory); padding: 0; font: inherit; color: var(--espresso); cursor: pointer; overflow: hidden; text-align: left; }
 .keep[data-on="true"] { border-color: var(--olive); }
-.keep .crop { width: 100%; aspect-ratio: 4/3; background: var(--taupe) center/cover no-repeat; display: block; }
+.keep .crop { width: 100%; aspect-ratio: 4/3; background: var(--taupe); display: grid; place-items: center; align-content: center; gap: 6px; padding: 10px; text-align: center; }
+.keep .kind { font-size: 26px; line-height: 1; }
+.keep .what { font-size: 13px; color: var(--espresso); line-height: 1.25; }
+.keep[data-on="true"] .crop { background: rgba(92,102,80,.12); }
 .keep .foot { display: flex; align-items: center; gap: 8px; padding: 9px 10px; background: var(--white); font-size: 13px; }
 .keep .box { width: 16px; height: 16px; flex: 0 0 16px; border: 1px solid var(--line); border-radius: 2px; display: grid; place-items: center; font-size: 11px; color: var(--white); background: var(--white); }
 .keep[data-on="true"] .box { background: var(--olive); border-color: var(--olive); }
-.keep .cap { position: absolute; top: 8px; left: 8px; background: rgba(47,39,35,.78); color: var(--ivory); font-size: 11px; padding: 4px 7px; border-radius: 2px; max-width: calc(100% - 16px); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .keep:disabled { cursor: default; }
 .keep:disabled .foot { color: var(--soft); }
 .keep.addmore { border-style: dashed; display: grid; place-items: center; min-height: 120px; color: var(--soft); font-size: 14px; }
