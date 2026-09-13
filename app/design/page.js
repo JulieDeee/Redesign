@@ -206,10 +206,14 @@ function Designer() {
                 <p className="label">SHOP THIS ROOM</p>
                 <div className="shop">
                   {brief.shopping?.map((it) => (
-                    <a key={it.name} href={it.url} target="_blank" rel="noreferrer sponsored">
+                    <div key={it.name} className="shopitem">
                       <span><span className="name">{it.name}</span><span className="why">{it.why}</span></span>
-                      <span className="price">{it.price} →</span>
-                    </a>
+                      <span className="shops">
+                        {(it.shops || []).map((s) => (
+                          <a key={s.id} href={s.url} target="_blank" rel="noreferrer sponsored">{s.label} →</a>
+                        ))}
+                      </span>
+                    </div>
                   ))}
                 </div>
                 <p className="disc">Links may earn us a commission at no cost to you.</p>
