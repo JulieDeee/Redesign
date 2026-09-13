@@ -1,4 +1,4 @@
-import Anthropic from "@anthropic-ai/sdk";
+import { claude, MODEL } from "@/lib/claude";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
@@ -18,10 +18,10 @@ export async function POST(req) {
     ? `Everything they've asked for so far, oldest first:\n${asked.map((a, i) => `${i + 1}. ${a}`).join("\n")}\n\nTheir newest request: ${message}`
     : `Their request: ${message}`;
 
-  const client = new Anthropic({ apiKey });
+  const client = claude();
   try {
     const msg = await client.messages.create({
-      model: process.env.ANTHROPIC_MODEL || "claude-sonnet-5",
+      model: MODEL,
       max_tokens: 500,
       system: `You are an interior designer refining a room render. The room is a ${room}${style ? ` in ${style} style` : ""}. Reply ONLY with raw JSON, no markdown: {"reply": "one short friendly sentence confirming the change", "prompt": "a complete image prompt for the whole room under 100 words that honours EVERY request listed, including the earlier ones"}. The prompt must end with: bright and well lit, crisp and polished, magazine-quality interior photograph, keep the same room layout, walls, windows and camera angle.`,
       messages: [{ role: "user", content: brief }],

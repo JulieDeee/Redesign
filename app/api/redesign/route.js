@@ -53,7 +53,9 @@ export async function POST(req) {
       original = await storeImage(file, "original.jpg", file.type || "image/jpeg");
     } catch (e) {
       console.error("blob upload failed", e);
-      return Response.json({ error: "Couldn't store the photo. Is the Vercel Blob store connected?" }, { status: 500 });
+      const detail = e?.message || String(e);
+      const seen = ["BLOB_STORE_ID", "BLOB_READ_WRITE_TOKEN", "VERCEL_OIDC_TOKEN"].filter((k) => process.env[k]).join(", ") || "none";
+      return Response.json({ error: `Couldn't store the photo. ${detail} (blob vars present: ${seen})` }, { status: 500 });
     }
   }
 

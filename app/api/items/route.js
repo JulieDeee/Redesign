@@ -1,4 +1,4 @@
-import Anthropic from "@anthropic-ai/sdk";
+import { claude, MODEL } from "@/lib/claude";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
@@ -13,9 +13,9 @@ export async function POST(req) {
   if (!imageUrl) return Response.json({ items: [] });
 
   try {
-    const client = new Anthropic({ apiKey });
+    const client = claude();
     const msg = await client.messages.create({
-      model: process.env.ANTHROPIC_MODEL || "claude-sonnet-5",
+      model: MODEL,
       max_tokens: 700,
       system: "Reply ONLY with raw JSON. No markdown.",
       messages: [{

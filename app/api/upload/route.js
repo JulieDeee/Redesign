@@ -15,6 +15,6 @@ export async function POST(req) {
     return Response.json({ url: blob.url });
   } catch (e) {
     console.error("upload failed", e);
-    return Response.json({ url: null }, { status: 500 });
+    return Response.json({ url: null, error: e?.message || String(e) }, { status: 500 });
   }
 }

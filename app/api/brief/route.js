@@ -1,4 +1,4 @@
-import Anthropic from "@anthropic-ai/sdk";
+import { claude, MODEL } from "@/lib/claude";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -10,10 +10,10 @@ export async function POST(req) {
   const { imageUrl, room, style } = await req.json();
   if (!imageUrl) return Response.json({ error: "No image." }, { status: 400 });
 
-  const client = new Anthropic({ apiKey });
+  const client = claude();
   try {
     const msg = await client.messages.create({
-      model: process.env.ANTHROPIC_MODEL || "claude-sonnet-5",
+      model: MODEL,
       max_tokens: 900,
       system: "You are a friendly interior designer helping a homeowner shop for a room. Reply ONLY with raw JSON. No markdown, no preamble.",
       messages: [{

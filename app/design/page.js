@@ -270,9 +270,11 @@ function Designer() {
             </div>
 
             {/* right: the ask */}
-            <div className="card visionhead">
-              <h2 className="script vision">Tell us about your vision.</h2>
-              <p className="hand tip">Not sure what to say?<br />Try our suggestions below!</p>
+            <div className="card">
+              <div className="visionhead">
+                <h2 className="script vision">Tell us about your vision.</h2>
+                <p className="hand tip">Not sure what to say?<br />Try our suggestions below!</p>
+              </div>
               <p className="sub">Be as detailed as you&rsquo;d like. The more you share, the more personalized your results will be.</p>
 
               <div className="ta">
@@ -345,9 +347,11 @@ function Designer() {
 
           <section className="helpband">
             <div className="stack">
-              <span style={preview ? { backgroundImage: `url(${preview})` } : undefined} />
-              <span style={angles[0] ? { backgroundImage: `url(${angles[0].url})` } : undefined} />
-              <span style={angles[1] ? { backgroundImage: `url(${angles[1].url})` } : undefined} />
+              {[preview, angles[0]?.url, angles[1]?.url, "/before.jpg", "/after.jpg", "/hero.jpg"]
+                .filter(Boolean).slice(0, 3)
+                .map((src, i) => (
+                  <span key={i}><img src={src} alt="" onError={(e) => (e.target.parentNode.style.display = "none")} /></span>
+                ))}
             </div>
             <div>
               <h4>Photos work best when…</h4>
