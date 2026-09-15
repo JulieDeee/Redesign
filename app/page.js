@@ -52,7 +52,6 @@ export default function Landing() {
         <div className="barlinks">
           <a href="#how">How it works</a>
           <a href="#styles">Styles</a>
-          <a href="#shop">Shop</a>
         </div>
         <Link href="/design" className="btn">Get started</Link>
       </nav>
@@ -121,7 +120,7 @@ export default function Landing() {
         </div>
       </section>
 
-      <footer>{BRAND} · As an Amazon Associate we earn from qualifying purchases. Photos you upload are used only to create your design.</footer>
+      <footer>{BRAND} · <Link href="/privacy">Privacy policy</Link> · <Link href="/terms">Terms of service</Link> · As an Amazon Associate we earn from qualifying purchases. Photos you upload are used only to create your design and are deleted after 30 days.</footer>
     </>
   );
 }

@@ -11,6 +11,11 @@ const ROOMS = [
 ];
 const STYLES = ["Cabin chic", "Modern classic", "Organic modern", "Coastal", "Moody", "Scandinavian", "Farmhouse", "Japandi", "Mid-century", "Rustic", "Traditional", "Industrial", "Boho", "Glam", "Surprise me"];
 const VIBES = ["Cozy & warm", "Bright & airy", "Moody & dramatic", "Calm & minimal", "Elevated & polished", "Collected & eclectic"];
+const SCOPES = [
+  { id: "Furniture only", label: "Furniture only", hint: "Keep every surface — walls, floor, ceiling stay exactly as they are" },
+  { id: "Furniture and paint", label: "Furniture and paint", hint: "New look plus fresh paint. Flooring and joinery stay" },
+  { id: "Full renovation", label: "Full renovation", hint: "Anything goes except the room's shape and windows" },
+];
 const HERO_EXTS = ["jpg", "jpeg", "png", "webp", "JPG", "JPEG", "PNG"];
 
 function Hero() {
@@ -62,6 +67,7 @@ export default function Designer() {
   const [room, setRoom] = useState("Living room");
   const [style, setStyle] = useState("");
   const [vibe, setVibe] = useState("");
+  const [scope, setScope] = useState("Furniture and paint");
   const [notes, setNotes] = useState("");
   const [items, setItems] = useState([]);
   const [loadingItems, setLoadingItems] = useState(false);
@@ -120,7 +126,7 @@ export default function Designer() {
     try {
       const fd = new FormData();
       fd.append("image", file); fd.append("room", room); fd.append("style", style || "Surprise me");
-      fd.append("notes", notes); fd.append("vibe", vibe); fd.append("aspect", String(aspect));
+      fd.append("notes", notes); fd.append("vibe", vibe); fd.append("scope", scope); fd.append("aspect", String(aspect));
       angles.forEach((a) => fd.append("extra", a.file));
       fd.append("keep", JSON.stringify(items.filter((i) => i.keep).map((i) => i.name)));
       fd.append("replace", JSON.stringify(items.filter((i) => !i.keep && !i.fixed).map((i) => i.name)));
@@ -159,7 +165,7 @@ export default function Designer() {
           <Link href="/">Home</Link>
           <Link href="/#how">How it works</Link>
           <Link href="/#styles">Styles</Link>
-          <Link href="/#shop">Shop</Link>
+          
         </div>
         <span style={{ color: "var(--soft)", fontSize: 14 }}>Free · 10 a day</span>
       </nav>
@@ -309,6 +315,18 @@ export default function Designer() {
                 </label>
               </div>
 
+              <div className="scopewrap">
+                <p className="label">HOW FAR SHOULD WE GO?</p>
+                <div className="scopes">
+                  {SCOPES.map((sc) => (
+                    <button key={sc.id} className="scope" data-on={scope === sc.id ? "true" : "false"} onClick={() => setScope(sc.id)}>
+                      <span className="name">{sc.label}</span>
+                      <span className="hint">{sc.hint}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
               {(loadingItems || items.length > 0) && (
                 <>
                   <div className="keephead">
@@ -369,7 +387,7 @@ export default function Designer() {
         </>
       )}
 
-      <footer>{BRAND} · As an Amazon Associate we earn from qualifying purchases. Photos you upload are used only to create your design.</footer>
+      <footer>{BRAND} · <Link href="/privacy">Privacy policy</Link> · <Link href="/terms">Terms of service</Link> · As an Amazon Associate we earn from qualifying purchases. Photos you upload are used only to create your design and are deleted after 30 days.</footer>
     </>
   );
 }

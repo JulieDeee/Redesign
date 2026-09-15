@@ -55,12 +55,13 @@ export async function POST(req) {
     notes = String(form.get("notes") || "").trim().slice(0, 500);
     aspect = Number(form.get("aspect")) || 0;
     const vibe = String(form.get("vibe") || "");
+    const scope = String(form.get("scope") || "Full renovation");
     const keep = JSON.parse(form.get("keep") || "[]");
     const replace = JSON.parse(form.get("replace") || "[]");
     if (!file || typeof file === "string") return Response.json({ error: "No photo received." }, { status: 400 });
     if (file.size > 8 * 1024 * 1024) return Response.json({ error: "Photo is over 8 MB. Try a smaller one." }, { status: 400 });
     extras = form.getAll("extra").filter((f) => f && typeof f !== "string" && f.size <= 8 * 1024 * 1024).slice(0, 3);
-    prompt = buildPrompt(room, style, notes, vibe, keep, replace);
+    prompt = buildPrompt(room, style, notes, vibe, keep, replace, scope);
     try {
       original = await storeImage(file, "original.jpg", file.type || "image/jpeg");
     } catch (e) {
