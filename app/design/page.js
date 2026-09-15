@@ -1,4 +1,4 @@
-"use client";
+  "use client";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { BRAND, TAGLINE } from "@/lib/brand";
@@ -202,12 +202,17 @@ export default function Designer() {
                 <ul>{brief.changes?.map((c) => <li key={c}>{c}</li>)}</ul>
                 <p className="label">SHOP THIS ROOM</p>
                 <div className="shop">
-                  {brief.shopping?.map((it) => (
+                  {brief.shopping?.map((it, i) => (
                     <div key={it.name} className="shopitem">
-                      <span><span className="name">{it.name}</span><span className="why">{it.why}</span></span>
+                      <span className="rank">{i + 1}</span>
+                      <span className="chip" style={{ background: brief.palette?.[i % (brief.palette?.length || 1)] || "var(--taupe)" }} />
+                      <span className="what">
+                        <span className="name">{it.name}</span>
+                        <span className="why">{it.why}</span>
+                      </span>
                       <span className="shops">
-                        {(it.shops || []).map((s) => (
-                          <a key={s.id} href={s.url} target="_blank" rel="noreferrer sponsored">{s.label} →</a>
+                        {(it.shops || []).map((sh) => (
+                          <a key={sh.id} href={sh.url} target="_blank" rel="noreferrer sponsored">{sh.label} →</a>
                         ))}
                       </span>
                     </div>
