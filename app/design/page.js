@@ -1,4 +1,4 @@
-  "use client";
+"use client";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { BRAND, TAGLINE } from "@/lib/brand";
@@ -77,6 +77,7 @@ export default function Designer() {
   const [chat, setChat] = useState([]);
   const [draft, setDraft] = useState("");
   const [refining, setRefining] = useState(false);
+  const [showAll, setShowAll] = useState(false);
   const [split, setSplit] = useState(52);
   const [err, setErr] = useState("");
   const fileRef = useRef();
@@ -133,7 +134,7 @@ export default function Designer() {
       const r = await fetch("/api/redesign", { method: "POST", body: fd });
       const j = await r.json();
       if (!r.ok) throw new Error(typeof j.error === "string" && j.error ? j.error : "Design failed. Try again in a moment.");
-      setResult(j); setPhase("done"); setChat(notes.trim() ? [{ role: "user", content: notes.trim() }] : []);
+      setShowAll(false); setResult(j); setPhase("done"); setChat(notes.trim() ? [{ role: "user", content: notes.trim() }] : []);
       loadBrief(j.redesigned);
     } catch (e) { setErr(e.message); setPhase("idle"); }
   };
@@ -202,10 +203,10 @@ export default function Designer() {
                 <ul>{brief.changes?.map((c) => <li key={c}>{c}</li>)}</ul>
                 <p className="label">SHOP THIS ROOM</p>
                 <div className="shop">
-                  {brief.shopping?.map((it, i) => (
+                  {(showAll ? brief.shopping : brief.shopping?.slice(0, 4))?.map((it, i) => (
                     <div key={it.name} className="shopitem">
                       <span className="rank">{i + 1}</span>
-                      <span className="chip" style={{ background: brief.palette?.[i % (brief.palette?.length || 1)] || "var(--taupe)" }} />
+                      <span className="swatch" style={{ background: brief.palette?.[i % (brief.palette?.length || 1)] || "var(--taupe)" }} />
                       <span className="what">
                         <span className="name">{it.name}</span>
                         <span className="why">{it.why}</span>
@@ -218,6 +219,11 @@ export default function Designer() {
                     </div>
                   ))}
                 </div>
+                {brief.shopping?.length > 4 && (
+                  <button className="seeall" onClick={() => setShowAll(!showAll)}>
+                    {showAll ? "Show fewer" : `See everything in this room (${brief.shopping.length})`}
+                  </button>
+                )}
                 <p className="disc">Links may earn us a commission at no cost to you.</p>
               </>
             )}
