@@ -1,5 +1,6 @@
 # Your AI room redesign site
 
+
 **Renaming:** edit `lib/brand.js` — three lines change the name everywhere.
 
 Landing page at `/`, the design tool at `/design`. Upload a room photo, pick a style, describe what stays, get a redesign plus a shoppable brief. Free, capped at 10 new designs per visitor per day.
