@@ -117,14 +117,23 @@ a { color: inherit; }
 .swatches { display: flex; gap: 8px; margin: 20px 0 24px; }
 .swatches span { width: 42px; height: 42px; border-radius: 2px; border: 1px solid var(--line); }
 .panel ul { margin: 0 0 24px; padding-left: 18px; }
-.shop { display: grid; gap: 8px; }
-.shopitem { display: flex; justify-content: space-between; align-items: center; gap: 14px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 2px; flex-wrap: wrap; }
-.shops { display: flex; gap: 8px; flex-wrap: wrap; }
-.shops a { color: var(--brass); font-weight: 600; font-size: 14px; text-decoration: none; white-space: nowrap; border: 1px solid var(--line); border-radius: 2px; padding: 7px 11px; }
-.shops a:hover { border-color: var(--brass); background: rgba(168,130,63,.08); }
-.shop .name { display: block; font-weight: 600; }
-.shop .why { display: block; font-size: 14px; color: var(--soft); }
-.shop .price { white-space: nowrap; color: var(--brass); font-weight: 600; }
+.shop { display: grid; gap: 0; border: 1px solid var(--line); border-radius: 3px; overflow: hidden; }
+.shopitem { display: flex; align-items: center; gap: 14px; padding: 16px 18px; background: var(--white); }
+.shopitem + .shopitem { border-top: 1px solid var(--line); }
+.shopitem .rank { font-family: 'Newsreader', Georgia, serif; font-size: 20px; color: var(--brass); width: 20px; flex: 0 0 20px; text-align: center; }
+.shopitem .chip { width: 34px; height: 34px; flex: 0 0 34px; border-radius: 3px; border: 1px solid var(--line); }
+.shopitem .what { flex: 1; min-width: 0; }
+.shopitem .name { display: block; font-weight: 600; font-size: 16px; line-height: 1.3; }
+.shopitem .why { display: block; font-size: 14px; color: var(--soft); }
+.shops { display: flex; gap: 14px; flex-wrap: wrap; justify-content: flex-end; }
+.shops a { color: var(--brass); font-weight: 600; font-size: 14px; text-decoration: none; white-space: nowrap; border-bottom: 1px solid var(--line); padding-bottom: 1px; }
+.shops a:hover { border-color: var(--brass); }
+@media (max-width: 560px) {
+  .shopitem { flex-wrap: wrap; }
+  .shopitem .what { flex: 1 1 100%; order: 3; }
+  .shops { flex: 1 1 100%; order: 4; justify-content: flex-start; }
+}
+
 .disc { font-size: 13px; color: var(--soft); margin: 10px 0 24px; }
 .chat { border-top: 1px solid var(--line); padding-top: 20px; }
 .msg { margin: 0 0 8px; padding: 11px 14px; border-radius: 3px; font-size: 15px; max-width: 92%; }
@@ -200,6 +209,13 @@ a { color: inherit; }
 .selwrap::after { content: "⌄"; position: absolute; right: 12px; top: 6px; color: var(--soft); pointer-events: none; }
 .selwrap:focus-within { border-color: var(--brass); }
 
+.scopewrap { margin-top: 24px; }
+.scopes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.scope { text-align: left; background: var(--white); border: 1px solid var(--line); border-radius: 3px; padding: 13px 14px; font: inherit; color: var(--espresso); cursor: pointer; display: grid; gap: 4px; }
+.scope[data-on="true"] { border-color: var(--olive); background: rgba(92,102,80,.08); }
+.scope .name { font-weight: 600; font-size: 15px; }
+.scope .hint { font-size: 13px; color: var(--soft); line-height: 1.35; }
+
 .keephead { display: flex; align-items: baseline; gap: 8px; margin: 26px 0 12px; }
 .keephead h4 { font-size: 15px; font-weight: 600; margin: 0; }
 .keephead em { font-style: normal; font-size: 12px; color: var(--soft); }
@@ -247,6 +263,7 @@ a { color: inherit; }
   .banner .scrim { background: linear-gradient(180deg, rgba(28,23,20,.9), rgba(28,23,20,.75)); }
   .tip { display: none; }
   .selects { grid-template-columns: 1fr; }
+  .scopes { grid-template-columns: 1fr; }
   .prompts { grid-template-columns: 1fr 1fr; }
   .helpband { grid-template-columns: 1fr; gap: 28px; padding: 32px 20px; }
   .helpband .pro, .helpband .sign { border-left: 0; padding-left: 0; border-top: 1px solid var(--line); padding-top: 24px; }
